@@ -28,7 +28,10 @@ Animal.prototype.render = function () {
   }
 };
 
-$.ajax('/data/page-1.json', 'json').then(parse => {
+$.ajax({
+  url: '/data/page-1.json',
+  async: true
+}).then(parse => {
 
   parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
 
