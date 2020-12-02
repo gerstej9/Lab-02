@@ -1,58 +1,60 @@
 'use strict';
 
 const animals = [];
+const keywordArray = [];
 
-function Animal(jsonObject){
-    this.image_url = jsonObject.image_url;
-    this.title = jsonObject.title;
-    this.description = jsonObject.description;
-    this.keyword =jsonObject.keyword;
-    this.horns = jsonObject.horns;
+function Animal(jsonObject) {
+  this.image_url = jsonObject.image_url;
+  this.title = jsonObject.title;
+  this.description = jsonObject.description;
+  this.keyword = jsonObject.keyword;
+  this.horns = jsonObject.horns;
 }
 
-Animal.prototype.render = function(){
-    const $newAnimalLi = $('#photo-template').find('li').clone();
-    $newAnimalLi.find('h2').text(this.title);
-    $newAnimalLi.find('img').attr('src', this.image_url);
-    $newAnimalLi.find('p').text(this.description);
-    console.log($newAnimalLi);
-    $('ul').append($newAnimalLi);
-}
+Animal.prototype.render = function () {
+  const $newAnimalLi = $('#photo-template').find('li').clone();
+  $newAnimalLi.attr('class', this.keyword);
+  $newAnimalLi.find('h2').text(this.title);
+  $newAnimalLi.find('img').attr('src', this.image_url);
+  $newAnimalLi.find('p').text(this.description);
+  $('ul').append($newAnimalLi);
+
+  const $newAnimalOption = $('#templateSelector').find('option').clone();
+  if (keywordArray.includes(this.keyword) !== true) {
+    keywordArray.push(this.keyword);
+    $newAnimalOption.attr('value', this.keyword);
+    $newAnimalOption.text(this.keyword);
+    $('select').append($newAnimalOption);
+  }
+};
 
 $.ajax('../data/page-1.json', 'json').then(parse => {
-console.log(parse);
 
-parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
+  parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
 
-animals.forEach(animal => animal.render());
+  animals.forEach(animal => animal.render());
 });
 
-/* 
+const selectImages = (event) => {
+  event.preventDefault();
+  if (event.target.value !== 'default'){
+    $('li').css('display', 'none');
+    $(`.${event.target.value}`).css('display', 'block');
+  }else{
+    $('li').css('display', 'block');
 
-// $.ajax and $.get both make ajax request
-// AJAX stands for Asynchronous Javascript and XML
-// go external to the file/ app and get things
-
-// AJAX takes time all asynchronous javascript takes time.
-// All Ajax takes 1 million years
-
-// .then is a method on all Promises that takes in a callback that fires off when the data returns to the javascript
-// the callback has 1 parameter: data
-
-$.get('data.json', 'json').then(dataPotato => {
-  console.log('data potato async', dataPotato);
-
-  // TODO: make a Dog out of each json object
-  JSON.parse(dataPotato).forEach(dogJSONObject => dogs.push(new Dog(dogJSONObject)));
-
-  // TODO: call render on each Dog
-  dogs.forEach(dog => dog.render());
-});
-// console.log('dog json synchronously', dogJSON);
+  }
+  //# change display property to none all images
+  //# create new css rule for class .keyword change display property on class "event.target.value"
+};
 
 
-$('#template').hide();
+$('select').on('change', selectImages);
 
 
+// Filter by keyword : li {display: auto}
+// keyword : li {display none}
 
-// $.get('https://raw.githubusercontent.com/codefellows/code-301-guide/master/curriculum/class-02/demo/read-json/data.json?token=AHUYDZX2LB4KGHFZWFYYVGK7Z7NGI', 'json').then(dataPotato => { */
+//           li attribute (keyword)
+//           $ #keyword display
+

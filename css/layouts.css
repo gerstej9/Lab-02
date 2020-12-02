@@ -1,0 +1,18 @@
+
+li {
+    float:left;
+    text-align:center;
+    border: 3px solid black;
+    margin: 10px;
+    width: 25%;
+    height:300px;
+}
+
+img {
+    width: 75%;
+}
+
+
+footer{
+    clear:left;
+}

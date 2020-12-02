@@ -21,24 +21,28 @@ Number and name of feature: Feature #2: Filter images
 
 Estimate of time needed to complete: 90min
 
-Start time: _____
+Start time: 3:41
 
-Finish time: _____
+Finish time: 4:47
 
-Actual time needed to complete: _____
+Actual time needed to complete: 65 min
 
 Number and name of feature: Feature #3: Style the application
 
 Estimate of time needed to complete: 90min
 
-Start time: _____
+Start time: 4:55
 
-Finish time: _____
+Finish time: 5:10
 
-Actual time needed to complete: _____
+Actual time needed to complete: 15 min
 
 
 ### Contributions
 * Eric Meyer reset.css code
 * eslintrc.json code provided by Code Fellows
 * Starting html.index code provided by Code Fellows
+* Duckett jQuery and Javascript Chapter 7
+* Google Fonts
+* W3 Schools
+* Oscarotero.com jQuery cheat sheet
