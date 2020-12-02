@@ -29,7 +29,7 @@ Animal.prototype.render = function () {
 };
 
 $.ajax({
-  url: '/data/page-1.json',
+  url: './data/page-1.json',
   async: true
 }).then(parse => {
 
