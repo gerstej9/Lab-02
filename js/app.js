@@ -28,7 +28,7 @@ Animal.prototype.render = function () {
   }
 };
 
-$.ajax('./data/page-1.json', 'json').then(parse => {
+$.ajax('.././data/page-1.json', 'json').then(parse => {
 
   parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
 
