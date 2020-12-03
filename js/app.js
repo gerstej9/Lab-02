@@ -27,6 +27,17 @@ function Animal(jsonObject) {
     $('select').append($newAnimalOption);
   }
 }; */
+const initialSort = () =>{
+  animals.sort((leftVal, rightVal) => {
+    if(leftVal.horns > rightVal.horns){
+      return -1;
+    }else if (leftVal.horns< rightVal.horns){
+      return 1;
+    }else{
+      return 0;
+    }
+  });
+};
 
 let title = $('title').text();
 
@@ -37,7 +48,7 @@ if (title.includes('Page 2')) {
   }).then(parse => {
 
     parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
-
+    initialSort();
     animals.forEach(animal => animal.render());
   });
 } else {
@@ -47,10 +58,11 @@ if (title.includes('Page 2')) {
   }).then(parse => {
 
     parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
-
+    initialSort();
     animals.forEach(animal => animal.render());
   });
-};
+}
+
 
 Animal.prototype.render = function () {
   const template = $('#photo-template').html();
@@ -61,35 +73,65 @@ Animal.prototype.render = function () {
     keywordArray.push(this.keyword);
     $newAnimalOption.attr('value', this.keyword);
     $newAnimalOption.text(this.keyword);
-    $('select').append($newAnimalOption);
+    $('#keyword').append($newAnimalOption);
   }
-}
+};
 
 $('#photo-template').hide();
 
 
-
-
 const selectImages = (event) => {
-  event.preventDefault();
   if (event.target.value !== 'default') {
     $('li').css('display', 'none');
     $(`.${event.target.value}`).css('display', 'block');
   } else {
     $('li').css('display', 'block');
-
   }
-  //# change display property to none all images
-  //# create new css rule for class .keyword change display property on class "event.target.value"
+};
+
+const sortSelectImages = (value) => {
+  if (value !== 'default') {
+    $('li').css('display', 'none');
+    $(`.${value}`).css('display', 'block');
+  } else {
+    $('li').css('display', 'block');
+  }
 };
 
 
-$('select').on('change', selectImages);
 
 
-// Filter by keyword : li {display: auto}
-// keyword : li {display none}
+const sortImages = (event) => {
+  const valueKey = $('#keyword option:selected').text();
+  sortSelectImages(valueKey);
+  if (event.target.value === 'horns') {
+    //sort function by horns
+    animals.sort((leftVal, rightVal) => {
+      if(leftVal.horns > rightVal.horns){
+        return -1;
+      }else if (leftVal.horns< rightVal.horns){
+        return 1;
+      }else{
+        return 0;
+      }
+    });
+  } else if(event.target.value === 'title'){
+    //sort function by title alphabetically
+    animals.sort((leftVal, rightVal) => {
+      if(leftVal.title.toLowerCase() > rightVal.title.toLowerCase()){
+        return 1;
+      }else if (leftVal.title.toLowerCase()< rightVal.title.toLowerCase()){
+        return -1;
+      }else{
+        return 0;
+      }
+    });
+  }
+  $('ul').empty();
+  animals.forEach(animal => animal.render());
+};
 
-//           li attribute (keyword)
-//           $ #keyword display
+$('#keyword').on('change', selectImages);
+$('#sort').on('change', sortImages);
+
 

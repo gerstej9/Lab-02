@@ -47,10 +47,10 @@
 * Actual time needed to complete: 26min
 
 ## Number and name of feature: Feature 4 (Day 2): Sort the images
-* Estimate of time needed to complete: 
-* Start time: 
-* Finish time: 
-* Actual time needed to complete: 
+* Estimate of time needed to complete: 60 min
+* Start time: 5:15
+* Finish time: 6:40
+* Actual time needed to complete: 85 minutes
 
 
 ### Contributions
