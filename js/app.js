@@ -11,7 +11,7 @@ function Animal(jsonObject) {
   this.horns = jsonObject.horns;
 }
 
-Animal.prototype.render = function () {
+/* Animal.prototype.render = function () {
   const $newAnimalLi = $('#photo-template').find('li').clone();
   $newAnimalLi.attr('class', this.keyword);
   $newAnimalLi.find('h2').text(this.title);
@@ -26,18 +26,18 @@ Animal.prototype.render = function () {
     $newAnimalOption.text(this.keyword);
     $('select').append($newAnimalOption);
   }
-};
+}; */
 
 let title = $('title').text();
 
-if (title.includes('Page 2')){
+if (title.includes('Page 2')) {
   $.ajax({
     url: './data/page-2.json',
     async: true
   }).then(parse => {
-  
+
     parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
-  
+
     animals.forEach(animal => animal.render());
   });
 } else {
@@ -45,20 +45,37 @@ if (title.includes('Page 2')){
     url: './data/page-1.json',
     async: true
   }).then(parse => {
-  
+
     parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
-  
+
     animals.forEach(animal => animal.render());
   });
 };
 
+Animal.prototype.render = function () {
+  const template = $('#photo-template').html();
+  const animalHtml = Mustache.render(template, this)
+  $('ul').append(animalHtml);
+  const $newAnimalOption = $('#templateSelector').find('option').clone();
+  if (keywordArray.includes(this.keyword) !== true) {
+    keywordArray.push(this.keyword);
+    $newAnimalOption.attr('value', this.keyword);
+    $newAnimalOption.text(this.keyword);
+    $('select').append($newAnimalOption);
+  }
+}
+
+$('#photo-template').hide();
+
+
+
 
 const selectImages = (event) => {
   event.preventDefault();
-  if (event.target.value !== 'default'){
+  if (event.target.value !== 'default') {
     $('li').css('display', 'none');
     $(`.${event.target.value}`).css('display', 'block');
-  }else{
+  } else {
     $('li').css('display', 'block');
 
   }
