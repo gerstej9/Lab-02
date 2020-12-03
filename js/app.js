@@ -28,15 +28,30 @@ Animal.prototype.render = function () {
   }
 };
 
-$.ajax({
-  url: './data/page-1.json',
-  async: true
-}).then(parse => {
+let title = $('title').text();
 
-  parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
+if (title.includes('Page 2')){
+  $.ajax({
+    url: './data/page-2.json',
+    async: true
+  }).then(parse => {
+  
+    parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
+  
+    animals.forEach(animal => animal.render());
+  });
+} else {
+  $.ajax({
+    url: './data/page-1.json',
+    async: true
+  }).then(parse => {
+  
+    parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
+  
+    animals.forEach(animal => animal.render());
+  });
+};
 
-  animals.forEach(animal => animal.render());
-});
 
 const selectImages = (event) => {
   event.preventDefault();

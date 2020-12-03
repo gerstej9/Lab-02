@@ -1,9 +1,10 @@
-# Code 301 Lab-02
+# Code 301 Lab-02, Lab-03
 ## jQuery Selectors and Events
 
 ### Collaborators
 * Nick Magruder
 * James Gerstenberger
+* Sang Lee (for Lab-03)
 
 ### Time Estimate
 Number and name of feature: Feature #1: Display images
@@ -36,6 +37,16 @@ Start time: 4:55
 Finish time: 5:10
 
 Actual time needed to complete: 15 min
+
+Number and name of feature: Feature #1 (Day 2): Pagination
+
+Estimate of time needed to complete: 45min
+
+Start time: 3:00pm
+
+Finish time: 3:45pm
+
+Actual time needed to complete: 60min
 
 
 ### Contributions
