@@ -18,7 +18,8 @@
   <header>
     <h1>The Gallery of Horns</h1>
     <nav>
-      <a href="index-2.html">Page 2</a>
+      <button id = "page1">Page 1</button>
+      <button id ="page2">Page 2</a>
     </nav>
     <div id = "templateSelector">
       <option value="template">Filter by Keyword</option>
@@ -26,15 +27,12 @@
     <select id = "keyword">
       <option value="default">Filter by Keyword</option>
     </select>
-    <select id = "sort">
-    <option value="default">Sort By</option>
-    <option value="horns">Number of Horns</option>
-    <option value="title">Title</option>
-  </select>
+    <button id="horns">Sort by Number of Horns</button>
+    <button id="title">Sort by Title</button>
   </header>
   <main>
     <template id="photo-template" type="text/x-tmpl-mustache">
-      <li class="{{keyword}}">
+      <li class="{{page}}" value = {{keyword}}>
         <h2>{{title}}</h2>
         <img src="{{image_url}}" alt="{{title}}">
         <p>{{description}}</p>

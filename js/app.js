@@ -1,14 +1,19 @@
 'use strict';
 
-const animals = [];
+const animals1 = [];
+const animals2 = [];
 const keywordArray = [];
+let page = 'Page 1';
+let pageOn = 1;
 
-function Animal(jsonObject) {
+
+function Animal(jsonObject, pageNum) {
   this.image_url = jsonObject.image_url;
   this.title = jsonObject.title;
   this.description = jsonObject.description;
   this.keyword = jsonObject.keyword;
   this.horns = jsonObject.horns;
+  this.page = pageNum;
 }
 
 /* Animal.prototype.render = function () {
@@ -27,46 +32,44 @@ function Animal(jsonObject) {
     $('select').append($newAnimalOption);
   }
 }; */
-const initialSort = () =>{
-  animals.sort((leftVal, rightVal) => {
-    if(leftVal.horns > rightVal.horns){
-      return -1;
-    }else if (leftVal.horns< rightVal.horns){
-      return 1;
-    }else{
-      return 0;
-    }
-  });
-};
+// const initialSort = () =>{
+//   animals.sort((leftVal, rightVal) => {
+//     if(leftVal.horns > rightVal.horns){
+//       return -1;
+//     }else if (leftVal.horns< rightVal.horns){
+//       return 1;
+//     }else{
+//       return 0;
+//     }
+//   });
+// };
 
-let title = $('title').text();
+$.ajax({
+  url: './data/page-2.json',
+  async: true
+}).then(parse => {
 
-if (title.includes('Page 2')) {
-  $.ajax({
-    url: './data/page-2.json',
-    async: true
-  }).then(parse => {
+  parse.forEach(animalJSONObject => animals2.push(new Animal(animalJSONObject, 'page2')));
+  animals2.sort(sortImageByHorn);
+  animals2.forEach(animal => animal.render());
+  $('.page2').hide();
+});
 
-    parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
-    initialSort();
-    animals.forEach(animal => animal.render());
-  });
-} else {
-  $.ajax({
-    url: './data/page-1.json',
-    async: true
-  }).then(parse => {
+$.ajax({
+  url: './data/page-1.json',
+  async: true
+}).then(parse => {
 
-    parse.forEach(animalJSONObject => animals.push(new Animal(animalJSONObject)));
-    initialSort();
-    animals.forEach(animal => animal.render());
-  });
-}
+  parse.forEach(animalJSONObject => animals1.push(new Animal(animalJSONObject, 'page1')));
+  // initialSort();
+  animals1.sort(sortImageByHorn);
+  animals1.forEach(animal => animal.render());
+});
 
 
 Animal.prototype.render = function () {
   const template = $('#photo-template').html();
-  const animalHtml = Mustache.render(template, this)
+  const animalHtml = Mustache.render(template, this);
   $('ul').append(animalHtml);
   const $newAnimalOption = $('#templateSelector').find('option').clone();
   if (keywordArray.includes(this.keyword) !== true) {
@@ -80,58 +83,68 @@ Animal.prototype.render = function () {
 $('#photo-template').hide();
 
 
-const selectImages = (event) => {
-  if (event.target.value !== 'default') {
-    $('li').css('display', 'none');
-    $(`.${event.target.value}`).css('display', 'block');
-  } else {
-    $('li').css('display', 'block');
-  }
-};
 
-const sortSelectImages = (value) => {
-  if (value !== 'default') {
-    $('li').css('display', 'none');
-    $(`.${value}`).css('display', 'block');
-  } else {
-    $('li').css('display', 'block');
-  }
-};
-
-
-
-
-const sortImages = (event) => {
-  const valueKey = $('#keyword option:selected').text();
-  sortSelectImages(valueKey);
-  if (event.target.value === 'horns') {
-    //sort function by horns
-    animals.sort((leftVal, rightVal) => {
-      if(leftVal.horns > rightVal.horns){
-        return -1;
-      }else if (leftVal.horns< rightVal.horns){
-        return 1;
-      }else{
-        return 0;
-      }
-    });
-  } else if(event.target.value === 'title'){
-    //sort function by title alphabetically
-    animals.sort((leftVal, rightVal) => {
-      if(leftVal.title.toLowerCase() > rightVal.title.toLowerCase()){
-        return 1;
-      }else if (leftVal.title.toLowerCase()< rightVal.title.toLowerCase()){
-        return -1;
-      }else{
-        return 0;
-      }
-    });
-  }
+const showImages = (event) => {
   $('ul').empty();
-  animals.forEach(animal => animal.render());
+  if (event.target.textContent === 'Page 1') {
+    page = "Page 1";
+    animals1.forEach(animal => animal.render());
+  } else {
+    page = "Page 2";
+    console.log(page);
+    animals2.forEach(animal => animal.render());
+  }
+  return page;
+};
+
+function sortImageByHorn(leftVal, rightVal) {
+  if (leftVal.horns > rightVal.horns) {
+    return -1;
+  } else if (leftVal.horns < rightVal.horns) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+function sortImageByTitle(leftVal, rightVal) {
+  if(leftVal.title.toLowerCase() > rightVal.title.toLowerCase()){
+    return 1;
+  }else if (leftVal.title.toLowerCase()< rightVal.title.toLowerCase()){
+    return -1;
+  }else{
+    return 0;
+  }
+}
+
+
+
+
+
+const selectImages = (event) => {
+  const liKeyword = event.target.value;
+  if(event.target.value !== 'default'){
+    console.log(event.target.value);
+    $('li').hide();
+    $(`li[value^='${event.target.value}']`).show();
+  }
+  // $('#keyword option:selected').text();
+  // $('ul').empty();
 };
 
 $('#keyword').on('change', selectImages);
-$('#sort').on('change', sortImages);
+$('nav').on('click', showImages);
+$('#horns, #title').on('click', event => {
+  if(event.target.textContent === ('Sort by Number of Horns')){
+    animals1.sort(sortImageByHorn);
+    animals2.sort(sortImageByHorn);
+  }else{
+    animals1.sort(sortImageByTitle);
+    animals2.sort(sortImageByTitle);
+  }
+  $('ul').empty();
+  if(page === 'Page 1') animals1.forEach(animal => animal.render());
+  if(page === 'Page 2') animals2.forEach(animal => animal.render());
+});
 
 
