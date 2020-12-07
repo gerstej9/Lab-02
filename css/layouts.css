@@ -7,8 +7,6 @@ ul{
 }
 
 li {
-/*     flex-wrap: wrap;
-    flex-direction: column; */
     display: block;
     justify-content: center;
     text-align: center;

@@ -4,7 +4,6 @@ const animals1 = [];
 const animals2 = [];
 const keywordArray = [];
 let page = 'Page 1';
-let pageOn = 1;
 
 
 function Animal(jsonObject, pageNum) {
@@ -15,34 +14,6 @@ function Animal(jsonObject, pageNum) {
   this.horns = jsonObject.horns;
   this.page = pageNum;
 }
-
-/* Animal.prototype.render = function () {
-  const $newAnimalLi = $('#photo-template').find('li').clone();
-  $newAnimalLi.attr('class', this.keyword);
-  $newAnimalLi.find('h2').text(this.title);
-  $newAnimalLi.find('img').attr('src', this.image_url);
-  $newAnimalLi.find('p').text(this.description);
-  $('ul').append($newAnimalLi);
-
-  const $newAnimalOption = $('#templateSelector').find('option').clone();
-  if (keywordArray.includes(this.keyword) !== true) {
-    keywordArray.push(this.keyword);
-    $newAnimalOption.attr('value', this.keyword);
-    $newAnimalOption.text(this.keyword);
-    $('select').append($newAnimalOption);
-  }
-}; */
-// const initialSort = () =>{
-//   animals.sort((leftVal, rightVal) => {
-//     if(leftVal.horns > rightVal.horns){
-//       return -1;
-//     }else if (leftVal.horns< rightVal.horns){
-//       return 1;
-//     }else{
-//       return 0;
-//     }
-//   });
-// };
 
 $.ajax({
   url: './data/page-2.json',
@@ -61,7 +32,6 @@ $.ajax({
 }).then(parse => {
 
   parse.forEach(animalJSONObject => animals1.push(new Animal(animalJSONObject, 'page1')));
-  // initialSort();
   animals1.sort(sortImageByHorn);
   animals1.forEach(animal => animal.render());
 });
@@ -128,8 +98,6 @@ const selectImages = (event) => {
     $('li').hide();
     $(`li[value^='${event.target.value}']`).show();
   }
-  // $('#keyword option:selected').text();
-  // $('ul').empty();
 };
 
 $('#keyword').on('change', selectImages);
